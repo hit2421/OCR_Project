@@ -54,7 +54,7 @@ The goal of this project is to develop and deploy a web-based prototype that dem
    - After the environment setup and library installation, the application was started, and it became accessible via a public URL.
 
 5. **Accessing the Application:**
-   - The live application can now be accessed at the URL: [Live application URL goes here]
+   - The live application can now be accessed at the URL: [https://hitesh2124-qweve.hf.space/]
 
 This deployment allows users to interact with the application seamlessly, utilizing the chosen OCR model for effective text extraction and search functionality.
 
@@ -71,15 +71,10 @@ This deployment allows users to interact with the application seamlessly, utiliz
 ### Steps to Install:
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
-    cd <repository-directory>
+    git clone <https://github.com/hit2421/OCR_Project.git>
+    cd <OCR>
     ```
-2. Create a virtual environment:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
-3. Install the required dependencies from `requirements.txt`:
+2. Install the required dependencies from `requirements.txt`:
     ```bash
     pip install -r requirements.txt
     ```
@@ -126,13 +121,60 @@ This deployment allows users to interact with the application seamlessly, utiliz
 2. Deployed web application (accessible via live URL).
 3. Example outputs for both the extracted text and search functionality.
 
-## Evaluation Criteria
-- **Accuracy:** How accurately the application extracts Hindi and English text from images.
-- **Functionality:** Ability to upload images, extract text, and search the text for keywords.
-- **User Interface:** A simple and functional UI.
-- **Deployment:** The application must be accessible via a live URL.
-- **Clarity:** Clear and concise documentation and code.
-- **Completeness:** All tasks are successfully demonstrated.
+### Code Explanation
 
-## Live URL:
-[https://hitesh2124-qweve.hf.space/]
+The provided code implements a web-based Optical Character Recognition (OCR) application using Streamlit, leveraging advanced OCR models to extract text from images containing both Hindi and English text. Below is a detailed breakdown of the code's functionality:
+
+1. **Imports**:  
+   The necessary libraries are imported, including:
+   - **Streamlit**: Used to create the web interface.
+   - **Torch**: Required for PyTorch functionalities.
+   - **Transformers**: From Hugging Face, used to load the Qwen model.
+   - **PIL**: For image processing tasks.
+   - **EasyOCR**: For performing OCR on images.
+   - **NumPy** and **OpenCV**: For image manipulation and processing.
+
+2. **Model Loading**:  
+   The Qwen2-VL model is loaded using the `from_pretrained()` method, which fetches the model weights and configurations needed for text generation from images. An `AutoProcessor` is instantiated to manage the pre-processing of input data.
+
+3. **OCR Initialization**:  
+   An EasyOCR reader is initialized specifically for recognizing Hindi text. This setup allows the application to extract Hindi characters from images effectively.
+
+4. **Streamlit Layout**:  
+   The web application layout is defined, with a title and description prompting users to upload images that contain text in both Hindi and English.
+
+5. **Image Upload**:  
+   A file uploader widget is created to enable users to upload image files in supported formats (JPEG and PNG).
+
+6. **Image Processing**:  
+   Once an image is uploaded, it is opened as a PIL image and displayed on the web interface for user confirmation.
+
+7. **Input Preparation**:  
+   A structured message is constructed for the model, indicating that the input comprises the uploaded image and a command to extract text from it.
+
+8. **Inference Preparation**:  
+   The input messages are processed to ensure they are formatted correctly for the model. The function `process_vision_info()` handles necessary transformations for the images. The inputs are moved to the appropriate device (GPU or CPU) for efficient processing.
+
+9. **Text Generation**:  
+   The model generates text based on the provided inputs. The output is processed to remove any special tokens and decode the generated IDs back into human-readable text.
+
+10. **Displaying Output**:  
+    The extracted English text is displayed in the web application, providing users with immediate feedback on the results of the OCR process.
+
+11. **Hindi Text Extraction**:  
+    The uploaded image is converted to OpenCV format for processing with EasyOCR, which extracts Hindi text from the image.
+
+12. **Text Filtering**:  
+    The extracted text is filtered to include only Hindi characters, ensuring that the displayed text contains relevant content. If no Hindi text is detected, an appropriate message is shown.
+
+13. **Combined Text Storage**:  
+    The extracted English and Hindi texts are combined to facilitate later keyword searches within the application.
+
+14. **Keyword Search Input**:  
+    A text input widget is provided for users to enter keywords they wish to search for within the extracted text.
+
+15. **Keyword Search Functionality**:  
+    When a keyword is entered, the application checks for its presence in the combined extracted text (case-insensitive). The results are displayed, indicating whether the keyword was found or not.
+
+### Summary
+This code successfully creates an interactive web application that allows users to upload images and extract text in both Hindi and English using state-of-the-art OCR models. The application not only extracts text but also offers functionality for users to search keywords within the extracted content, enhancing user engagement with the text extraction process.
