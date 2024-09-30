@@ -1,11 +1,4 @@
-torchvision
-transformers 
-pillow 
-streamlit 
-pytesseract 
-git+https://github.com/huggingface/transformers.git
-qwen-vl-utils
-accelerate>=0.26.0
-sentencepiece
-easyocr 
-opencv-python
+import torch
+
+print(torch.cuda.device_count())
+print(torch.cuda.get_device_name(0))
