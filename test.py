@@ -1,0 +1,11 @@
+torchvision
+transformers 
+pillow 
+streamlit 
+pytesseract 
+git+https://github.com/huggingface/transformers.git
+qwen-vl-utils
+accelerate>=0.26.0
+sentencepiece
+easyocr 
+opencv-python
