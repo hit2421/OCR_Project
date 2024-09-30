@@ -3,13 +3,18 @@ import torch
 from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 from PIL import Image
-import pytesseract
+import easyocr
+import numpy as np
+import cv2
 
 # Load the Qwen2-VL model and processor
 model = Qwen2VLForConditionalGeneration.from_pretrained(
     "Qwen/Qwen2-VL-7B-Instruct", torch_dtype="auto", device_map="auto"
 )
 processor = AutoProcessor.from_pretrained("Qwen/Qwen2-VL-7B-Instruct")
+
+# Initialize EasyOCR reader for Hindi
+easyocr_reader = easyocr.Reader(['hi'])  # Only for Hindi
 
 # Streamlit app layout
 st.title("OCR for Hindi and English Text")
@@ -64,14 +69,24 @@ if uploaded_file is not None:
     )
 
     # Display the extracted English text from Qwen2-VL
-    st.subheader("Extracted Text (Qwen2-VL):")
+    st.subheader("Extracted English Text :")
     st.write(output_text[0])  # Display the extracted text from the image
     
-    # Fallback: Extract Hindi text using pytesseract
-    st.subheader("Extracted Hindi Text (Fallback OCR using Tesseract):")
+    # Extract Hindi text using EasyOCR
+    st.subheader("Extracted Hindi Text:")
     
-    # Extract Hindi text using pytesseract with explicit language
-    hindi_text = pytesseract.image_to_string(image, lang='hin')
+    # Convert PIL image to OpenCV format
+    image_cv = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+
+    # Perform OCR using EasyOCR
+    results = easyocr_reader.readtext(image_cv)
+
+    # Extract Hindi text
+    hindi_text = ""
+    for (bbox, text, prob) in results:
+        # Check if the detected text is in Hindi
+        if any('\u0900' <= char <= '\u097F' for char in text):  # Unicode range for Devanagari script
+            hindi_text += f"{text})\n"
 
     # Display extracted Hindi text
     if hindi_text.strip():
