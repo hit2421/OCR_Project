@@ -72,7 +72,7 @@ This deployment allows users to interact with the application seamlessly, utiliz
 1. Clone the repository:
     ```bash
     git clone <https://github.com/hit2421/OCR_Project.git>
-    cd <OCR>
+    cd OCR
     ```
 2. Install the required dependencies from `requirements.txt`:
     ```bash
