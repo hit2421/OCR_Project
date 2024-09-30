@@ -5,3 +5,4 @@ streamlit
 pytesseract 
 git+https://github.com/huggingface/transformers
 qwen-vl-utils
+accelerate>=0.26.0
